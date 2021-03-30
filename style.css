@@ -1,0 +1,164 @@
+body {
+  height: 100vh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background: rgb(34,16,27);
+  background: linear-gradient(133deg, rgba(34,16,27,1) 0%, rgba(4,27,41,1) 100%);
+  color: white;
+}
+
+.label {
+  display: flex;
+  width: 430px;
+  justify-content: center;
+}
+
+.label > p {
+  font-size: 18px;
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: space-between; 
+}
+
+.text-area {
+  box-sizing: border-box;
+  font-size: 16px;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 50px;
+  border: 2px solid rgba(205,195,168,0.5);
+  background: rgba(236,255,148,0.02);
+  color: white;
+}
+
+.text-area:focus {
+  outline: 3px solid rgba(165,198,185,0.5);
+}
+
+.button {
+  color: white;
+  height: 40px;
+  width: 200px;
+  background: rgba(236,255,148,0.02);
+  border: 3px solid rgba(205,195,168,0.5);
+  font-size: 16px;
+  transition: all 1s ease;
+}
+
+  .button_active-timer {
+  border: 3px solid rgb(182, 43, 43);
+}
+
+.button:hover {
+  cursor: pointer;
+  transition: all .5s ease;
+  border: 3px solid rgba(165,198,185,0.5);
+  background: rgb(255,255,255);
+  background: linear-gradient(133deg, rgba(255,255,255,0) 0%, rgba(206,255,168,0.02) 33%, rgba(225,218,150,0.2) 49%, rgba(215,255,189,0) 66%, rgba(255,255,255,0) 100%);
+/*    animation-name: background, turnOn;
+   animation-duration: 2s, .7s;
+   animation-iteration-count: infinite, 1s;
+   animation-timing-function: linear, linear; */
+   animation: background 2s infinite linear; 
+/*   animation-fill-mode: backwards; */
+}
+  
+@keyframes background {
+  100% {
+    background-position: 200px 0;
+  }
+}
+
+.svg-container{ 
+  position: relative; 
+  height: 300px;
+  width: 300px;
+}
+
+.svg-content {
+/*   display: inline-block; */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 300px; 
+  height: 300px;
+}
+
+.pomodoro {
+  position: absolute;
+  display: flex;
+  box-sizing: border-box;
+  border: 2px solid rgba(205,195,168,1);
+  border-radius: 0%;
+  width: 300px;
+  height: 300px;
+  background: rgb(252,95,0);
+  background: linear-gradient(148deg, rgba(252,95,0,1) 0%, rgba(243,65,3,0.7469362745098039) 26%, rgba(217,93,76,0.7525385154061625) 44%, rgba(241,156,61,0.7497373949579832) 54%, rgba(105,51,35,1) 100%);
+  clip-path: url(#mask); 
+}
+
+.pomodoro_leave {
+  display: block;
+  box-sizing: border-box;
+  border: 2px solid rgba(205,195,168,1);
+  border-radius: 0%;
+  width: 300px;
+  height: 300px;
+  background: rgb(172,252,0);
+  background: linear-gradient(148deg, rgba(172,252,0,1) 0%, rgba(172,243,3,0.7469362745098039) 26%, rgba(228,255,91,0.7525385154061625) 44%, rgba(184,241,61,0.7497373949579832) 54%, rgba(35,105,51,1) 100%);
+  clip-path: url(#mask_leave); 
+}
+
+.pomodoro-green {
+  background: linear-gradient(148deg, rgba(172,252,0,1) 0%, rgba(172,243,3,0.7469362745098039) 26%, rgba(228,255,91,0.7525385154061625) 44%, rgba(184,241,61,0.7497373949579832) 54%, rgba(35,105,51,1) 100%);
+}
+
+.timer {
+  color: rgb(34,16,27);
+  font-size: 60px;
+  margin-top: 140px;
+  text-align: center;
+  width: 100%;
+}
+
+.open-menu-button {
+  width: 40px; height: 40px;
+}
+
+.open-menu-button:hover {
+  cursor: pointer;
+}
+
+.open-menu-button:hover #start-path {
+   stroke: rgba(165,198,185,0.9);
+}
+
+#start-path.opening {
+  animation: 0.2s menu-opening linear 0s 1 normal forwards;
+}
+
+#start-path.closing {
+  animation: 0.2s menu-closing linear 0s 1 reverse backwards;
+}
+
+@keyframes menu-closing {
+  0% {
+    d: path("M 11.2 11 C 10.667 11 10.133 11 9.6 11 C 8 11 6.4 11 4.8 11 C 3.2 11 1.6 11 0 11 C 0 11.667 0 12.333 0 13 C 4 13 8 13 12 13 C 16 13 20 13 24 13 C 24 12.333 24 11.667 24 11 C 22.4 11 20.8 11 19.2 11 C 17.6 11 16 11 14.4 11 C 13.867 11 13.333 11 12.8 11 L 11.2 11 M 0 4 L 24 4 L 24 2 L 0 2 L 0 4 M 24 20 L 24 22 L 0 22 L 0 20 L 24 20");
+  }
+  100% {
+    d: path("M 12 3 C 9.614 3 7.323 3.949 5.636 5.636 C 3.949 7.323 3 9.614 3 12 C 3 13.193 3.237 14.362 3.685 15.444 C 4.133 16.526 4.793 17.52 5.636 18.364 C 7.323 20.051 9.614 21 12 21 C 14.386 21 16.677 20.051 18.364 18.364 C 19.207 17.52 19.866 16.526 20.315 15.444 C 20.763 14.362 21 13.193 21 12 C 21 9.614 20.051 7.323 18.364 5.636 C 16.677 3.949 14.386 3 12 3 L 12 3 M 8 8 L 10 10 L 12 12 L 14 14 L 16 16 M 16 8 L 14 10 L 12 12 L 10 14 L 8 16");
+  }
+}
+
+@keyframes menu-opening {
+  from {
+    d: path("M 11.2 11 C 10.667 11 10.133 11 9.6 11 C 8 11 6.4 11 4.8 11 C 3.2 11 1.6 11 0 11 C 0 11.667 0 12.333 0 13 C 4 13 8 13 12 13 C 16 13 20 13 24 13 C 24 12.333 24 11.667 24 11 C 22.4 11 20.8 11 19.2 11 C 17.6 11 16 11 14.4 11 C 13.867 11 13.333 11 12.8 11 L 11.2 11 M 0 4 L 24 4 L 24 2 L 0 2 L 0 4 M 24 20 L 24 22 L 0 22 L 0 20 L 24 20");
+  }
+  to {
+    d: path("M 12 3 C 9.614 3 7.323 3.949 5.636 5.636 C 3.949 7.323 3 9.614 3 12 C 3 13.193 3.237 14.362 3.685 15.444 C 4.133 16.526 4.793 17.52 5.636 18.364 C 7.323 20.051 9.614 21 12 21 C 14.386 21 16.677 20.051 18.364 18.364 C 19.207 17.52 19.866 16.526 20.315 15.444 C 20.763 14.362 21 13.193 21 12 C 21 9.614 20.051 7.323 18.364 5.636 C 16.677 3.949 14.386 3 12 3 L 12 3 M 8 8 L 10 10 L 12 12 L 14 14 L 16 16 M 16 8 L 14 10 L 12 12 L 10 14 L 8 16");
+  }
+}
+

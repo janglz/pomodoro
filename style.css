@@ -1,4 +1,26 @@
+@font-face { 
+  font-family: 'Nunito regular'; 
+  src: url('fonts/Nunito-Regular.ttf') format('truetype');
+  font-weight: normal; 
+  font-style: normal; 
+}
+
+@font-face { 
+  font-family: 'Nunito light-italic'; 
+  src: url('fonts/Nunito-LightItalic.ttf') format('truetype');
+  font-weight: normal; 
+  font-style: normal;  
+}
+
+@font-face { 
+  font-family: 'Nunito semi-bold'; 
+  src: url('fonts/Nunito-SemiBold.ttf') format('truetype');
+  font-weight: normal; 
+  font-style: normal;  
+}
+
 body {
+  font-family: 'Nunito regular';
   height: 100vh;
   margin: 0 auto;
   display: flex;
@@ -17,7 +39,7 @@ body {
 }
 
 .label > p {
-  font-size: 18px;
+  font-size: 16px;
   flex: 1 1 auto;
   display: flex;
   justify-content: space-between; 
@@ -91,29 +113,25 @@ body {
   position: absolute;
   display: flex;
   box-sizing: border-box;
-  border: 2px solid rgba(205,195,168,1);
-  border-radius: 0%;
   width: 300px;
   height: 300px;
   background: rgb(252,95,0);
-  background: linear-gradient(148deg, rgba(252,95,0,1) 0%, rgba(243,65,3,0.7469362745098039) 26%, rgba(217,93,76,0.7525385154061625) 44%, rgba(241,156,61,0.7497373949579832) 54%, rgba(105,51,35,1) 100%);
+  background: linear-gradient(148deg, rgba(252,95,0,1) 0%, rgba(243,65,3,0.7) 26%, rgba(217,93,76,0.7) 44%, rgba(241,156,61,0.7) 54%, rgba(105,51,35,1) 100%);
   clip-path: url(#mask); 
 }
 
 .pomodoro_leave {
   display: block;
-  box-sizing: border-box;
-  border: 2px solid rgba(205,195,168,1);
   border-radius: 0%;
   width: 300px;
   height: 300px;
   background: rgb(172,252,0);
-  background: linear-gradient(148deg, rgba(172,252,0,1) 0%, rgba(172,243,3,0.7469362745098039) 26%, rgba(228,255,91,0.7525385154061625) 44%, rgba(184,241,61,0.7497373949579832) 54%, rgba(35,105,51,1) 100%);
+  background: linear-gradient(148deg, rgba(172,252,0,1) 0%, rgba(172,243,3,0.7) 26%, rgba(228,255,91,0.7) 44%, rgba(184,241,61,0.7) 54%, rgba(35,105,51,1) 100%);
   clip-path: url(#mask_leave); 
 }
 
 .pomodoro-green {
-  background: linear-gradient(148deg, rgba(172,252,0,1) 0%, rgba(172,243,3,0.7469362745098039) 26%, rgba(228,255,91,0.7525385154061625) 44%, rgba(184,241,61,0.7497373949579832) 54%, rgba(35,105,51,1) 100%);
+  background: linear-gradient(148deg, rgba(172,252,0,1) 0%, rgba(172,243,3,0.7) 26%, rgba(228,255,91,0.7) 44%, rgba(184,241,61,0.7) 54%, rgba(35,105,51,1) 100%);
 }
 
 .timer {
@@ -162,3 +180,11 @@ body {
   }
 }
 
+@media screen and (max-width: 440px) {
+  .label, .button {
+    width: 310px;
+  }
+  .label > p {
+    flex-direction: column;
+  }
+}

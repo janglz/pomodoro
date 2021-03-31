@@ -3,20 +3,17 @@
 <head>
     <title>POMODORO</title>
     <meta charset="utf-8">
-    <!--meta name = "viewport" content = "width = device-width"-->
-    <!--<link rel="icon" href="favicon.png" type="image/png" sizes="any"-->
-    <link type="image/png" sizes="16x16" rel="icon" href="favicon.png">
-    <!--link href="Exo2.0-Thin.otf" rel="stylesheet">-->
-    <link rel="preconnect" href="https://fonts.gstatic.com"> 
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+    <meta name = "viewport" content = "width = device-width">
+    <link type="image/png" sizes="any" rel="icon" href="favicon.png">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="main-block">
-   <form action="handler.php">
+  <form>
   <div class="label"><p>Введите интервал работы (мин)</p>
     <input class="text-area" id="work-time" type="number" value="20"> 
-  </div class="label"><div class="label"><p>Введите интервал стандартного перерыва (мин)</p>
+  </div class="label">
+  <div class="label"><p>Введите интервал стандартного перерыва (мин)</p>
     <input class="text-area" id="break-time" type="number" value="5"> 
   </div class="label">
   <div class="label"><p>Введите интервал длительного перерыва (мин)</p>
@@ -30,7 +27,7 @@
       <input class="button" type="button" id="stop-timer" value="STOP">
       </p>
     </div class="label">
- </form>
+  </form>
 
  <div class="label"> 
  <div class="svg-container"> 
@@ -70,16 +67,17 @@
   </div>
   <div class="menu-button">
     <svg class="open-menu-button">
-  <g>
-    <path id="start-path" fill="white" stroke="rgb(34,16,27)" transform="scale(1.5)" stroke-width="1" class="closing" d="M 11.2 11 C 10.667 11 10.133 11 9.6 11 C 8 11 6.4 11 4.8 11 C 3.2 11 1.6 11 0 11 C 0 11.667 0 12.333 0 13 C 4 13 8 13 12 13 C 16 13 20 13 24 13 C 24 12.333 24 11.667 24 11 C 22.4 11 20.8 11 19.2 11 C 17.6 11 16 11 14.4 11 C 13.867 11 13.333 11 12.8 11 L 11.2 11 M 0 4 L 24 4 L 24 2 L 0 2 L 0 4 M 24 20 L 24 22 L 0 22 L 0 20 L 24 20"/>
-  </g>  
-</svg>  
+      <g>
+        <path id="start-path" fill="white" stroke="rgb(34,16,27)" transform="scale(1.5)" stroke-width="1" class="closing" d="M 11.2 11 C 10.667 11 10.133 11 9.6 11 C 8 11 6.4 11 4.8 11 C 3.2 11 1.6 11 0 11 C 0 11.667 0 12.333 0 13 C 4 13 8 13 12 13 C 16 13 20 13 24 13 C 24 12.333 24 11.667 24 11 C 22.4 11 20.8 11 19.2 11 C 17.6 11 16 11 14.4 11 C 13.867 11 13.333 11 12.8 11 L 11.2 11 M 0 4 L 24 4 L 24 2 L 0 2 L 0 4 M 24 20 L 24 22 L 0 22 L 0 20 L 24 20"/>
+      </g>  
+    </svg>  
+  </div>
+  <div class="modal-info">
+    
   </div>
   </div>
   </div>
 </div>
 <script src="timer.js"></script>
-<audio id="start-work-sound" src="start-work-sound.mp3" preload="auto"></audio>
-<audio id="start-relax-sound" src="start-relax-sound.mp3" preload="auto"></audio>
 </body>
 </html>

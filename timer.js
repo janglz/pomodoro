@@ -13,7 +13,7 @@ const work = { time: workTimeInput.value, working: true }
 const relax = { time: breakTimeInput.value, working: false }
 const longRelax = { time: longBreakTimeInput.value, working: false }
 
-const timeTable = [ work, relax, work, relax, work, relax, work, longRelax ];
+const timeTable = [ work, relax, work, relax, work, relax, work, longRelax ]; //расписание промежутков работы и отдыха
 
 workTimeInput.addEventListener('change', ()=> work.time = workTimeInput.value);
 breakTimeInput.addEventListener('change', ()=> relax.time = breakTimeInput.value);
@@ -22,41 +22,44 @@ longBreakTimeInput.addEventListener('change', ()=> longRelax.time = longBreakTim
 let timerOn = false;
 let alreadyStarted = false;
 
+//тут создается новый таймер, на основании полученного времени
 const startNewTimer = (interval) => {
-  let counter = interval * 60; 
+  let counter = Math.floor(interval * 60); 
   const timerTick = () => {
     changeTimeInPomodoro(counter);
     setTimeout(() => { 
       counter -= 1; 
       if (counter > 0 && timerOn === true) { 
         timerTick();  
+        console.log(counter);
       } 
     }, 1000);
   }
-  timerTick();
+  setTimeout(timerTick(), 0);
 }
 
+//это "генератор" таймеров, создает новый таймер каждый раз, как проходит заданный интервал времени
 const startPomodoro = (i = 0) => {
   if (timeTable[i] === undefined) i = 0;
   const current = timeTable[i];
-  console.log(current, timerOn);
-  if (current.working === true) {
-    pomodoro.classList.add('pomodoro-green');
-    currentStatusToDom.innerHTML = `working`
-    audioStart.currentTime = 0;
-    audioStart.play();
-  } else {
-    pomodoro.classList.remove('pomodoro-green');
-    currentStatusToDom.innerHTML = `relax`
-    audioStop.currentTime = 0;
-    audioStop.play();
-  }
-  if (timerOn === true) {
-    startNewTimer(current.time);
-    setTimeout(() => startPomodoro(i+1), current.time * 60000); //current.time * 1000 * 60);
+  if (timerOn) {
+    if (current.working) {
+      pomodoro.classList.add('pomodoro-green');
+      currentStatusToDom.innerHTML = `working`
+      audioStart.currentTime = 0;
+      audioStart.play();
+    } else {
+      pomodoro.classList.remove('pomodoro-green');
+      currentStatusToDom.innerHTML = `relax`
+      audioStop.currentTime = 0;
+      audioStop.play();
+    }
+    setTimeout(startNewTimer(current.time), 5);
+    setTimeout(() => startPomodoro(i+1), Math.floor(current.time * 60000));
   }
 }
 
+//сует в DOM 
 const changeTimeInPomodoro = (seconds) => {
   let sec = String (seconds % 60);
   let min = String ((seconds - sec) / 60);
@@ -71,7 +74,7 @@ const clearTimeInPomodoro = () => {
 }
 
 startTimerButton.addEventListener('click', ()=>{
-  if (alreadyStarted) return;
+  if (alreadyStarted) return; //чтоб не нажималась кнопка старта более 1 раза
   timerOn = true;
   startPomodoro();
   stopTimerButton.classList.add('button_active-timer');

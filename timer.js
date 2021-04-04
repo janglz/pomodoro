@@ -7,7 +7,7 @@ const textAreas = Array.prototype.slice.call(document.querySelectorAll('text-are
 const pomodoro = document.querySelector('.pomodoro');
 const menuButton = document.querySelector('.menu-button');
 const menuPath = document.getElementById('menu-path');
-const currentStatusToDom = document.querySelector('.modal-info');
+const currentStatusToDom = document.querySelector('.pomodoro_leave');
 
 const work = { time: workTimeInput.value, working: true }
 const relax = { time: breakTimeInput.value, working: false }
@@ -25,24 +25,23 @@ let alreadyStarted = false;
 const state = {
   timerOn: false,
 }
-
-//тут создается новый таймер, на основании полученного времени, и рекурсивно тикает, пока не кончится принятый им интервал
+//
+const getTimeInMs = () => {
+  const now = new Date();
+  return now.getMilliseconds();
+}
 
 const createNewTimer = async (currentPeriod = 0) => {
-  console.log('big interval launched')
-  console.log(state.timerOn)
   const current = timeTable[currentPeriod];
   current.working ? makePomodoroGreen() : makePomodoroRed();
 
   for (let counter = Math.floor(current.time * 60); counter >= 0; counter -= 1) {
-    console.log(counter);
     changeTimeInPomodoro(counter)
+    const currentTime = getTimeInMs();
     await new Promise(resolve => {
-      setTimeout(() => resolve(), 1000);
+      setTimeout(() => resolve(), correctedTimeout(currentTime));
     })
-    console.log(counter)
     if (!state.timerOn) { 
-      console.log(state.timerOn)
       clearTimeout(changeTimeInPomodoro);
       counter = 0;
       return counter = 0;
@@ -53,6 +52,14 @@ const createNewTimer = async (currentPeriod = 0) => {
   }
 }
 
+
+const correctedTimeout = (prevTickTime) => {
+  const now = new Date();
+  const currTickTime = now.getMilliseconds();
+  const newTimeout = 1000 - (currTickTime - prevTickTime);
+  return newTimeout < 0 ? 0 : newTimeout;
+}
+
 //эта функция сует результат в DOM 
 const changeTimeInPomodoro = (seconds) => {
   let sec = String (seconds % 60);
@@ -60,30 +67,29 @@ const changeTimeInPomodoro = (seconds) => {
   if (min.length === 1) min = `0${min}`;
   if (sec.length === 1) sec = `0${sec}`;
   pomodoro.innerHTML = `<p class="timer">${min}:${sec}</p>`;
-  console.log(min, sec);
 }
 
 const makePomodoroRed = () => {
   pomodoro.classList.remove('pomodoro-green');
-  currentStatusToDom.innerHTML = `relax`
+  currentStatusToDom.innerHTML = `<p class="current-status rotation">перерыв!</p>`
   audioStop.currentTime = 0;
   audioStop.play();
 }
 
 const makePomodoroGreen = () => {
   pomodoro.classList.add('pomodoro-green');
-  currentStatusToDom.innerHTML = `working`
+  currentStatusToDom.innerHTML = `<p class="current-status fade-in-out">работа</p>`
   audioStart.currentTime = 0;
   audioStart.play();
 }
 
 const clearTimeInPomodoro = () => {
   pomodoro.innerHTML = `<p class="timer">00:00</p>`
-  currentStatusToDom.innerHTML = `stopped`
+  currentStatusToDom.innerHTML = `<p class="current-status">остановлен</p>`
 }
 
 startTimerButton.addEventListener('click', ()=>{
-  if (alreadyStarted) return; //чтоб не нажималась кнопка старта более 1 раза
+  if (alreadyStarted) return; 
   state.timerOn = true;
   createNewTimer(0);
   stopTimerButton.classList.add('button_active-timer');
@@ -92,10 +98,8 @@ startTimerButton.addEventListener('click', ()=>{
 })
 
 stopTimerButton.addEventListener('click', ()=>{
-  
   audioStop.currentTime = 0;
   audioStop.play();
-  
   setTimeout(() => {
     alreadyStarted = false
     pomodoro.classList.remove('pomodoro-green');

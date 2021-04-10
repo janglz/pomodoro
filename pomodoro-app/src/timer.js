@@ -13,7 +13,7 @@ const work = { time: workTimeInput.value, working: true }
 const relax = { time: breakTimeInput.value, working: false }
 const longRelax = { time: longBreakTimeInput.value, working: false }
 
-const timeTable = [ work, relax, work, relax, work, relax, work, relax, work, longRelax ]; //расписание промежутков работы и отдыха
+const timeTable = [ work, relax, work, relax, work, relax, work, longRelax ]; //расписание промежутков работы и отдыха
 
 workTimeInput.addEventListener('change', ()=> work.time = workTimeInput.value);
 breakTimeInput.addEventListener('change', ()=> relax.time = breakTimeInput.value);
@@ -28,50 +28,45 @@ const state = {
 //
 const getTimeInMs = () => {
   const now = new Date();
-  return now.getTime();
+  return now.getMilliseconds();
 }
 
-const createNewTimer = (currentPeriod = 0) => {
-  if (currentPeriod >= timeTable.length) currentPeriod = 0;
+const createNewTimer = async (currentPeriod = 0) => {
   const current = timeTable[currentPeriod];
   current.working ? makePomodoroGreen() : makePomodoroRed();
-  let duration = Math.floor(current.time * 60);
-  let startTimeInMs = getTimeInMs();
-  const countTime = (incomingTime) => {
-    let seconds = incomingTime;
-    
-    const intervalID = setInterval(() =>{
-      const currentTimeInMs = getTimeInMs();
-      const delta = (currentTimeInMs - startTimeInMs);
-      if (delta >= 1000) {
-        seconds -= 1;
-        changeTimeInPomodoro(current, seconds);
-        startTimeInMs = currentTimeInMs - (delta - 1000);
-      }
-      if (!state.timerOn) { 
-        window.clearInterval(intervalID);
-        clearTimeInPomodoro();
-        document.title = 'POMODORRO'
-        seconds = 0;
-        return seconds = 0;
-      }
-      if (seconds <= 0 && state.timerOn) {
-        window.clearInterval(intervalID);
-        createNewTimer(currentPeriod + 1);
-      }
-    }, 100)
+
+  for (let counter = Math.floor(current.time * 60); counter >= 0; counter -= 1) {
+    changeTimeInPomodoro(counter)
+    const currentTime = getTimeInMs();
+    await new Promise(resolve => {
+      setTimeout(() => resolve(), correctedTimeout(currentTime));
+    })
+    if (!state.timerOn) { 
+      clearTimeout(changeTimeInPomodoro);
+      counter = 0;
+      return counter = 0;
+    }
+    if (counter <= 0 && state.timerOn) {
+      createNewTimer(currentPeriod + 1);
+    }
   }
-  countTime(duration);
 }
 
-const changeTimeInPomodoro = (current, seconds) => {
+
+const correctedTimeout = (prevTickTime) => {
+  const now = new Date();
+  const currTickTime = now.getMilliseconds();
+  const newTimeout = 1000 - (currTickTime - prevTickTime);
+  return newTimeout < 0 ? 0 : newTimeout;
+}
+
+//эта функция сует результат в DOM 
+const changeTimeInPomodoro = (seconds) => {
   let sec = String (seconds % 60);
   let min = String ((seconds - sec) / 60);
   if (min.length === 1) min = `0${min}`;
   if (sec.length === 1) sec = `0${sec}`;
   pomodoro.innerHTML = `<p class="timer">${min}:${sec}</p>`;
-  const status =  current.working ? 'До перерыва' : 'Отдых:'
-  document.title = `${status} ${min}:${sec}`;
 }
 
 const makePomodoroRed = () => {
@@ -118,10 +113,7 @@ stopTimerButton.addEventListener('click', ()=>{
 // анимированная кнопочка
 const animatedMenuButton = document.querySelector('.open-menu-button');
 const startPath = document.getElementById('start-path');
-const miniModal = document.querySelector('.modal-info');
 animatedMenuButton.addEventListener('click', ()=>{ 
-  miniModal.classList.toggle('opened');
-  miniModal.classList.toggle('closed');
   startPath.classList.toggle('opening');
   startPath.classList.toggle('closing');
 })

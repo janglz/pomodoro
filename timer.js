@@ -24,6 +24,21 @@ let alreadyStarted = false;
 
 const state = {
   timerOn: false,
+  timeRemains: null,
+  currentTimetableIndex: 0,
+}
+
+const saveTimerToLocalStorage = (currentTimetableIndex, timeRemains) => {
+  localStorage.setItem('currentTime', 'red');
+  stateString = JSON.stringify(state);
+  localStorage.setItem('state', stateString);
+  
+}
+
+const loadTimerToLocalStorage = () => {
+  localStorage.getItem('currentTime', 'red');
+  stateString = JSON.stringify(state);
+  localStorage.getItem('state', stateString);
 }
 //
 const getTimeInMs = () => {
